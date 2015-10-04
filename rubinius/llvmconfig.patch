@@ -1,0 +1,13 @@
+diff --git a/vm/llvm/jit_memory_manager.cpp b/vm/llvm/jit_memory_manager.cpp.new
+index 54cd97c..e1296e6 100644
+--- a/vm/llvm/jit_memory_manager.cpp
++++ b/vm/llvm/jit_memory_manager.cpp.new
+@@ -70,7 +70,7 @@ SOFTWARE.
+ #include <llvm/Support/Memory.h>
+ #include <llvm/Support/ErrorHandling.h>
+ #include <llvm/Support/DynamicLibrary.h>
+-#include <llvm/Config/config.h>
++#include <llvm/Config/llvm-config.h>
+ #include <vector>
+ #include <cassert>
+ #include <climits>
