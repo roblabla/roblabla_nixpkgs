@@ -41,12 +41,12 @@
     };
   };
   "norminette" = {
-    version = "1.0.0alpha";
+    version = "1.0.0.alpha1";
     source = {
       type = "git";
       url = "https://github.com/roblabla/norminette42.git";
-      rev = "f080f21631a67f21c682a3c6ab1e6656f13f2940";
-      sha256 = "1v870xsnawbryy9v3fhy4hd9v6p6dmbcyzshn2z6z5pr69qpbkm7";
+      rev = "95da2ae52d997c8e5a0d52dfe3e2a227c751479e";
+      sha256 = "1kqycbxg057i6cynbsd8k861cymw1w553h0bglyi90i1dv3yk31p";
       fetchSubmodules = false;
     };
     dependencies = [
