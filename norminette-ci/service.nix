@@ -22,6 +22,7 @@ in {
       };
       apikey = mkOption {
         type = types.string;
+        default = "";
         description = "The github API key to use";
       };
     };
