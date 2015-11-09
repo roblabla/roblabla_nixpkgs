@@ -7,6 +7,7 @@ let
   pkgs = {
     rubinius = callPackage ./rubinius/default.nix {};
     norminette = callPackage ./norminette/default.nix {};
+    norminette-ci = callPackage ./norminette-ci/default.nix {};
   };
 in
   pkgs
