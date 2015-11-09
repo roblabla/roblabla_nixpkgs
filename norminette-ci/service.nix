@@ -4,7 +4,7 @@ with lib;
 
 let
   cfg = config.services.norminette-ci;
-  norminette-ci = import ./default.nix {};
+  norminette-ci = (import ../default.nix).norminette-ci;
   norminette = (import ../default.nix).norminette;
 in {
   options = {
