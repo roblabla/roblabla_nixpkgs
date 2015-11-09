@@ -23,15 +23,16 @@ in {
     };
   };
 
-  users.extraGroups.norminette-ci = { };
-  users.extraUsers.norminette-ci = {
-    description = "norminette-ci";
-    group = "norminette-ci";
-    useDefaultShell = true;
-  };
-
   config = mkIf cfg.enable {
     services.norminette-ci.package = mkDefault norminette;
+
+    users.extraGroups.norminette-ci = { };
+    users.extraUsers.norminette-ci = {
+      description = "norminette-ci";
+      group = "norminette-ci";
+      useDefaultShell = true;
+    };
+
     systemd.services.norminette-ci = {
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
