@@ -1498,7 +1498,7 @@
       sha1 = "3014a6b01bd4cb74720f13925253ae0d9268147b";
     };
     deps = {
-      "core-js-1.2.5" = self.by-version."core-js"."1.2.5";
+      "core-js-1.2.6" = self.by-version."core-js"."1.2.6";
     };
     optionalDependencies = {
     };
@@ -1518,7 +1518,7 @@
       sha1 = "4a2052cbcff531788d3a9d6b03cd7f448285f825";
     };
     deps = {
-      "core-js-1.2.5" = self.by-version."core-js"."1.2.5";
+      "core-js-1.2.6" = self.by-version."core-js"."1.2.6";
     };
     optionalDependencies = {
     };
@@ -2243,15 +2243,15 @@
     cpu = [ ];
   };
   by-spec."core-js"."^1.0.0" =
-    self.by-version."core-js"."1.2.5";
-  by-version."core-js"."1.2.5" = self.buildNodePackage {
-    name = "core-js-1.2.5";
-    version = "1.2.5";
+    self.by-version."core-js"."1.2.6";
+  by-version."core-js"."1.2.6" = self.buildNodePackage {
+    name = "core-js-1.2.6";
+    version = "1.2.6";
     bin = false;
     src = fetchurl {
-      url = "http://registry.npmjs.org/core-js/-/core-js-1.2.5.tgz";
-      name = "core-js-1.2.5.tgz";
-      sha1 = "020ac0f22d85045d6877c2010284236cf117a606";
+      url = "http://registry.npmjs.org/core-js/-/core-js-1.2.6.tgz";
+      name = "core-js-1.2.6.tgz";
+      sha1 = "e2351f6cae764f8c34e5d839acb6a60cef8b4a45";
     };
     deps = {
     };
@@ -3163,6 +3163,26 @@
     os = [ ];
     cpu = [ ];
   };
+  by-spec."gitignore-parser"."0.0.2" =
+    self.by-version."gitignore-parser"."0.0.2";
+  by-version."gitignore-parser"."0.0.2" = self.buildNodePackage {
+    name = "gitignore-parser-0.0.2";
+    version = "0.0.2";
+    bin = false;
+    src = fetchurl {
+      url = "http://registry.npmjs.org/gitignore-parser/-/gitignore-parser-0.0.2.tgz";
+      name = "gitignore-parser-0.0.2.tgz";
+      sha1 = "f61259b985dd91414b9a7168faef9171c2eec5df";
+    };
+    deps = {
+    };
+    optionalDependencies = {
+    };
+    peerDependencies = [];
+    os = [ ];
+    cpu = [ ];
+  };
+  "gitignore-parser" = self.by-version."gitignore-parser"."0.0.2";
   by-spec."glob"."^4.3.1" =
     self.by-version."glob"."4.5.3";
   by-version."glob"."4.5.3" = self.buildNodePackage {
