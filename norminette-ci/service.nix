@@ -35,8 +35,9 @@ in {
 
     systemd.services.norminette-ci = {
       wantedBy = [ "multi-user.target" ];
+      path = [ norminette ];
       serviceConfig = {
-        ExecStart = "PATH=${norminette}/bin ${cfg.package}/bin/norminette-ci";
+        ExecStart = "${cfg.package}/bin/norminette-ci";
         User = "norminette-ci";
       };
     };
