@@ -1,28 +1,23 @@
-GIT
-  remote: https://github.com/roblabla/norminette42.git
-  revision: 95da2ae52d997c8e5a0d52dfe3e2a227c751479e
-  specs:
-    norminette (1.0.0.alpha1)
-      bunny
-      facter
-      json
-
 GEM
   remote: https://rubygems.org/
   specs:
     CFPropertyList (2.2.8)
     amq-protocol (2.0.0)
-    bunny (2.2.0)
+    bunny (2.2.1)
       amq-protocol (>= 2.0.0)
     facter (2.4.4)
       CFPropertyList (~> 2.2.6)
     json (1.8.3)
+    norminette (1.0.0.rc1.pre.0)
+      bunny
+      facter
+      json
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  norminette!
+  norminette (>= 1.0.0.rc1.pre.0)
 
 BUNDLED WITH
    1.10.6

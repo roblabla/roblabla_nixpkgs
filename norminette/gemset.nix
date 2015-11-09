@@ -14,10 +14,10 @@
     };
   };
   "bunny" = {
-    version = "2.2.0";
+    version = "2.2.1";
     source = {
       type = "gem";
-      sha256 = "1wc2haz70rdylqw39ln8l130nh8rwn1k19lcw2qwgvf2r969w6wh";
+      sha256 = "06x84k1bj6ckn7xzn1nf1vcvwxnlm66r39w02j6crq2pcald61gz";
     };
     dependencies = [
       "amq-protocol"
@@ -41,13 +41,10 @@
     };
   };
   "norminette" = {
-    version = "1.0.0.alpha1";
+    version = "1.0.0.rc1.pre.0";
     source = {
-      type = "git";
-      url = "https://github.com/roblabla/norminette42.git";
-      rev = "95da2ae52d997c8e5a0d52dfe3e2a227c751479e";
-      sha256 = "1kqycbxg057i6cynbsd8k861cymw1w553h0bglyi90i1dv3yk31p";
-      fetchSubmodules = false;
+      type = "gem";
+      sha256 = "1388qf9ai9qn3i8hmymvw8wagyiibk1zw8sk4vnl25n7lbr5jxzq";
     };
     dependencies = [
       "bunny"
