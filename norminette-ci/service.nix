@@ -48,6 +48,7 @@ in {
       wantedBy = [ "multi-user.target" ];
       path = [ norminette pkgs.git ];
       environment.GITHUB_API_KEY = cfg.apikey;
+      environment.SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";
       serviceConfig = {
         ExecStart = "${cfg.package}/bin/norminette-ci";
         User = "norminette-ci";
