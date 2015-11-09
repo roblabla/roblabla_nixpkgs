@@ -46,7 +46,7 @@ in {
     systemd.services.norminette-ci = {
       wantedBy = [ "multi-user.target" ];
       path = [ norminette ];
-      environment = { GITHUB_API_KEY = cfg.apikey };
+      environment.GITHUB_API_KEY = cfg.apikey;
       serviceConfig = {
         ExecStart = "${cfg.package}/bin/norminette-ci";
         User = "norminette-ci";
