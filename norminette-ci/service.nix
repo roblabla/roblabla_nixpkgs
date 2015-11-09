@@ -6,7 +6,7 @@ let
   cfg = config.services.norminette-ci;
   norminette-ci = import ./default.nix {};
   norminette = (import ../default.nix {}).norminette;
-in
+in {
   options = {
     services.norminette-ci = rec {
       enable = mkOption {
@@ -41,3 +41,4 @@ in
       };
     };
   };
+}
