@@ -34,7 +34,6 @@ in {
     services.norminette-ci.package = mkDefault norminette;
     systemd.services.norminette-ci = {
       wantedBy = [ "multi-user.target" ];
-      env
       serviceConfig = {
         ExecStart = "PATH=${norminette}/bin ${cfg.package}/bin/norminette-ci";
         User = "norminette-ci";
