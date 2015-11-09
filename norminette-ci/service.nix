@@ -24,7 +24,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    services.norminette-ci.package = mkDefault norminette;
+    services.norminette-ci.package = mkDefault norminette-ci;
 
     users.extraGroups.norminette-ci = { };
     users.extraUsers.norminette-ci = {
