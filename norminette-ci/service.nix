@@ -20,10 +20,20 @@ in {
         type = types.path;
         description = "The norminette-ci package";
       };
+      apikey = mkOption {
+        type = types.string;
+        description = "The github API key to use";
+      };
     };
   };
 
   config = mkIf cfg.enable {
+    assertions = [
+      { assertion = cfg.apikey != "";
+        message = "apikey must be set";
+      }
+    ];
+
     services.norminette-ci.package = mkDefault norminette-ci;
 
     users.extraGroups.norminette-ci = { };
@@ -36,6 +46,7 @@ in {
     systemd.services.norminette-ci = {
       wantedBy = [ "multi-user.target" ];
       path = [ norminette ];
+      environment = { GITHUB_API_KEY = cfg.apikey };
       serviceConfig = {
         ExecStart = "${cfg.package}/bin/norminette-ci";
         User = "norminette-ci";
