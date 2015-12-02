@@ -8,7 +8,7 @@ GEM
     facter (2.4.4)
       CFPropertyList (~> 2.2.6)
     json (1.8.3)
-    norminette (1.0.0.rc1.pre.0)
+    norminette (1.0.0.rc2.pre.0)
       bunny
       facter
       json
@@ -17,7 +17,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  norminette (>= 1.0.0.rc1.pre.0)
+  norminette (>= 1.0.0.rc2.pre.0)
 
 BUNDLED WITH
    1.10.6

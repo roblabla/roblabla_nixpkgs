@@ -41,10 +41,10 @@
     };
   };
   "norminette" = {
-    version = "1.0.0.rc1.pre.0";
+    version = "1.0.0.rc2.pre.0";
     source = {
       type = "gem";
-      sha256 = "1388qf9ai9qn3i8hmymvw8wagyiibk1zw8sk4vnl25n7lbr5jxzq";
+      sha256 = "01fjmrsn1wn24nbhis91qqdlnli56cjfg1jjcyz4c51x5lim77x1";
     };
     dependencies = [
       "bunny"

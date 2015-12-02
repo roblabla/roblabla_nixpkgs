@@ -1,3 +1,3 @@
 source 'https://rubygems.org'
 
-gem 'norminette', '>= 1.0.0.rc1.pre.0'
+gem 'norminette', '>= 1.0.0.rc2.pre.0'
