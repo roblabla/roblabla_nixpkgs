@@ -21,5 +21,6 @@ in
       nodePackages.by-spec."babel"."^5.8.23"
       nodePackages.by-spec."webpack"."^1.12.6"
     ];
+    postBuild = "npm run build";
     peerDependencies = [];
   }
