@@ -20,6 +20,7 @@ in
       nodePackages.by-spec."catw"."^1.0.1"
       nodePackages.by-spec."babel"."^5.8.23"
       nodePackages.by-spec."webpack"."^1.12.6"
+      nodePackages.by-spec."source-map-loader"."^0.1.5"
     ];
     postBuild = "npm run build";
     peerDependencies = [];
