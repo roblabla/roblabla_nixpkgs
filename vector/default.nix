@@ -7,6 +7,9 @@ stdenv.mkDerivation {
     sha256 = "28001de40d0b1e088826e5442c13ada2ee375038fb3b5ab0a5ac7399e3aab1a2";
   };
 
+  postPatch = ''
+    sed -i config.json s/matrix.org/matrix.cmc.im/
+  '';
   buildInputs = [ nodejs git ];
   buildPhase = ''
     export GIT_SSL_CAINFO="${cacert}/etc/ssl/certs/ca-bundle.crt";
