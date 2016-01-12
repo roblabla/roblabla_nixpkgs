@@ -12,6 +12,9 @@ stdenv.mkDerivation {
     export GIT_SSL_CAINFO="${cacert}/etc/ssl/certs/ca-bundle.crt";
     export HOME=$(pwd)
     ${nodejs}/bin/npm i
+    cd node_modules/matrix-react-sdk
+    ${nodejs}/bin/npm i
+    cd ../
     ${nodejs}/bin/npm run build
   '';
   installPhase = ''
