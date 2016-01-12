@@ -6269,7 +6269,7 @@
       sha256 = "ff68b0800890eb725f96c9dfe499fb357b226c890dd5bba2b7427c973984f366";
     };
     deps = {
-      "babel-5.8.23" = self.by-version."babel"."5.8.23";
+      "babel-5.8.34" = self.by-version."babel"."5.8.34";
       "classnames-2.2.3" = self.by-version."classnames"."2.2.3";
       "filesize-3.1.5" = self.by-version."filesize"."3.1.5";
       "flux-2.1.1" = self.by-version."flux"."2.1.1";
