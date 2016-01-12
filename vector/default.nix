@@ -8,7 +8,7 @@ stdenv.mkDerivation {
   };
 
   postPatch = ''
-    sed -i config.json s/matrix.org/matrix.cmc.im/
+    sed -i s/matrix.org/matrix.cmc.im/ config.json
   '';
   buildInputs = [ nodejs git ];
   buildPhase = ''
