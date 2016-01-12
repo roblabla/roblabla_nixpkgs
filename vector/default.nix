@@ -14,7 +14,7 @@ stdenv.mkDerivation {
     ${nodejs}/bin/npm i
     cd node_modules/matrix-react-sdk
     ${nodejs}/bin/npm i
-    cd ../
+    cd ../../
     ${nodejs}/bin/npm run build
   '';
   installPhase = ''
