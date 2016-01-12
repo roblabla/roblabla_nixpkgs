@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> {}, fetchgit }:
 let
   nodePackages = import "${pkgs.path}/pkgs/top-level/node-packages.nix" {
     inherit pkgs;
