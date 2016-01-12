@@ -8,6 +8,7 @@ let
     rubinius = callPackage ./rubinius/default.nix {};
     norminette = callPackage ./norminette/default.nix {};
     norminette-ci = callPackage ./norminette-ci/default.nix {};
+    vector = callPackage ./vector/default.nix {};
   };
 in
   pkgs
