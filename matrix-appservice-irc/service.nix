@@ -5,7 +5,7 @@ with lib;
 let
   cfg = config.services.matrix-appservice-irc;
   matrix-appservice-irc = (import ../default.nix).matrix-appservice-irc;
-  configFile = pkgs.writeFile "config.yaml" cfg.config;
+  configFile = pkgs.writeText "config.yaml" cfg.config;
 in {
   options = {
     services.matrix-appservice-irc = rec {
