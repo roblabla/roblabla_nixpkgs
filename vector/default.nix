@@ -7,8 +7,8 @@ let
     self = nodePackages;
     generated = ./package.nix;
   };
-in rec {
-  build = nodePackages.buildNodePackage {
+in
+  nodePackages.buildNodePackage {
     name = "vector-web-0.1.2";
     src = fetchFromGitHub {
       owner = "vector-im";
@@ -22,5 +22,4 @@ in rec {
       ${pkgs.nodejs}/bin/npm run build
     '';
     peerDependencies = [];
-  };
-}
+  }
