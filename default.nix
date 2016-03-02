@@ -10,6 +10,7 @@ let
     norminette-ci = callPackage ./norminette-ci/default.nix {};
     matrix-appservice-irc = callPackage ./matrix-appservice-irc {};
     vector = callPackage ./vector/default.nix {};
+    gogs = callPackage ./gogs/default.nix {};
   };
 in
   pkgs
