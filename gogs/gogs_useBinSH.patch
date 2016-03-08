@@ -1,0 +1,22 @@
+diff --git a/models/repo.go b/models/repo.go
+index cb040d5..38568d4 100644
+--- a/models/repo.go
++++ b/models/repo.go
+@@ -38,7 +38,7 @@ import (
+ )
+ 
+ const (
+-	_TPL_UPDATE_HOOK = "#!/usr/bin/env %s\n%s update $1 $2 $3 --config='%s'\n"
++	_TPL_UPDATE_HOOK = "#!/bin/sh\n%s update $1 $2 $3 --config='%s'\n"
+ )
+ 
+ var (
+@@ -614,7 +614,7 @@ func DeleteMirrorByRepoID(repoID int64) error {
+ 
+ func createUpdateHook(repoPath string) error {
+ 	return git.SetUpdateHook(repoPath,
+-		fmt.Sprintf(_TPL_UPDATE_HOOK, setting.ScriptType, "\""+setting.AppPath+"\"", setting.CustomConf))
++		fmt.Sprintf(_TPL_UPDATE_HOOK, "\""+setting.AppPath+"\"", setting.CustomConf))
+ }
+ 
+ type MigrateRepoOptions struct {

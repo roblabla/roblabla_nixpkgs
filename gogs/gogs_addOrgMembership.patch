@@ -1,0 +1,65 @@
+diff --git a/routers/api/v1/api.go b/routers/api/v1/api.go
+index 04b392f..34344b7 100644
+--- a/routers/api/v1/api.go
++++ b/routers/api/v1/api.go
+@@ -199,6 +199,7 @@ func RegisterRoutes(m *macaron.Macaron) {
+ 		// Organizations
+ 		m.Get("/user/orgs", ReqToken(), org.ListMyOrgs)
+ 		m.Get("/users/:username/orgs", org.ListUserOrgs)
++		m.Put("/orgs/:orgname/memberships/:username", bind(api.AddOrgMembershipOption{}), org.AddOrgMembership)
+ 		m.Combo("/orgs/:orgname").Get(org.Get).Patch(bind(api.EditOrgOption{}), org.Edit)
+ 
+ 		m.Any("/*", func(ctx *middleware.Context) {
+diff --git a/routers/api/v1/org/members.go b/routers/api/v1/org/members.go
+new file mode 100644
+index 0000000..e4539c6
+--- /dev/null
++++ b/routers/api/v1/org/members.go
+@@ -0,0 +1,47 @@
++// Copyright 2015 The Gogs Authors. All rights reserved.
++// Use of this source code is governed by a MIT-style
++// license that can be found in the LICENSE file.
++
++package org
++
++import (
++	api "github.com/gogits/go-gogs-client"
++
++	"github.com/gogits/gogs/modules/middleware"
++	"github.com/gogits/gogs/routers/api/v1/convert"
++	"github.com/gogits/gogs/routers/api/v1/user"
++)
++
++func AddOrgMembership(ctx *middleware.Context, form api.AddOrgMembershipOption) {
++	org := user.GetUserByParamsName(ctx, ":orgname")
++	member := user.GetUserByParamsName(ctx, ":username")
++	if ctx.Written() {
++		return
++	}
++
++	if !org.IsOwnedBy(ctx.User.Id) {
++		ctx.Error(403)
++		return
++	}
++
++	if err := org.AddMember(member.Id); err != nil {
++		ctx.APIError(500, "AddMember", err)
++		return
++	}
++	if form.Role == "admin" {
++		team, err := org.GetOwnerTeam();
++		if err != nil {
++			ctx.APIError(500, "GetOwnerTeam", err)
++			return
++		}
++		if err := team.AddMember(member.Id); err != nil {
++			ctx.APIError(500, "AddMember", err)
++			return
++		}
++	}
++	ret := map[string]interface{} {
++		"organization": convert.ToApiOrganization(org),
++		"user": convert.ToApiUser(member),
++	}
++	ctx.JSON(200, ret)
++}

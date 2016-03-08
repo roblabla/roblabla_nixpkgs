@@ -1,0 +1,50 @@
+diff --git a/routers/api/v1/api.go b/routers/api/v1/api.go
+index 04b392f..6f5f356 100644
+--- a/routers/api/v1/api.go
++++ b/routers/api/v1/api.go
+@@ -178,6 +178,7 @@ func RegisterRoutes(m *macaron.Macaron) {
+ 				Delete(repo.Delete)
+ 
+ 			m.Group("/:username/:reponame", func() {
++				m.Put("/collaborators/:collaborator", repo.AddCollaborator)
+ 				m.Combo("/hooks").Get(repo.ListHooks).
+ 					Post(bind(api.CreateHookOption{}), repo.CreateHook)
+ 				m.Patch("/hooks/:id:int", bind(api.EditHookOption{}), repo.EditHook)
+diff --git a/routers/api/v1/repo/collaborators.go b/routers/api/v1/repo/collaborators.go
+new file mode 100644
+index 0000000..f7e36a4
+--- /dev/null
++++ b/routers/api/v1/repo/collaborators.go
+@@ -0,0 +1,32 @@
++// Copyright 2014 The Gogs Authors. All rights reserved.
++// Use of this source code is governed by a MIT-style
++// license that can be found in the LICENSE file.
++
++package repo
++
++import (
++	"github.com/gogits/gogs/models"
++	"github.com/gogits/gogs/modules/middleware"
++)
++
++func AddCollaborator(ctx *middleware.Context) {
++	// Shouldn't reach this condition, but just in case.
++	collaborator, err := models.GetUserByName(ctx.Params(":collaborator"))
++
++	if err != nil {
++		if models.IsErrUserNotExist(err) {
++			ctx.APIError(422, "", err)
++		} else {
++			ctx.APIError(500, "GetUserByName", err)
++		}
++		return
++	}
++
++	if err := ctx.Repo.Repository.AddCollaborator(collaborator); err != nil {
++		ctx.APIError(500, "AddCollaborator", err)
++		return
++	}
++
++	ctx.Status(204)
++	return
++}

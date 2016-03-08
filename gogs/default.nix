@@ -546,11 +546,16 @@ let
         rev = "d584b1e0fb4d8ad0e8cf2fae2368838f2526b408";
         sha256 = "0vrxil4vp682s2fn3fj2kmiv34f0ib8a3y62g1qfr7nhhbhqi4c5";
       };
+      patches = [
+        ./go-gogs-client_addOrgMembership.patch
+        ./go-gogs-client_maxRepoCreationAPI.patch
+      ];
       propagatedBuildInputs = [
       ];
     };
     "github.com/gogits/gogs" = goPackages.buildGoPackage rec {
-      name = "gogits-gogs";
+      name = "gogits-gogs-${version}";
+      version = "0.8.43";
       goPackagePath = "github.com/gogits/gogs";
       src = fetchFromGitHub {
         owner = "gogits";
@@ -558,6 +563,12 @@ let
         rev = "d324500959c06e975921790f8770aa5d1bdf2344";
         sha256 = "0ajl0l2f28n1myp9bzq7g1g0nbamps3n4vn31qwxw6gxyr1b8by2";
       };
+      patches = [
+        ./gogs_addOrgMembership.patch
+        ./gogs_addCollaborator.patch
+        ./gogs_maxRepoCreationAPI.patch
+        ./gogs_useBinSH.patch
+      ];
       propagatedBuildInputs = [
         goPkgs."github.com/Unknwon/cae"
         goPkgs."github.com/Unknwon/com"

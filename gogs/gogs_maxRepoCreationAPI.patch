@@ -1,0 +1,14 @@
+diff --git a/routers/api/v1/admin/users.go b/routers/api/v1/admin/users.go
+index 9a8c906..03ac246 100644
+--- a/routers/api/v1/admin/users.go
++++ b/routers/api/v1/admin/users.go
+@@ -107,6 +107,9 @@ func EditUser(ctx *middleware.Context, form api.EditUserOption) {
+ 	if form.AllowImportLocal != nil {
+ 		u.AllowImportLocal = *form.AllowImportLocal
+ 	}
++	if form.MaxRepoCreation != nil {
++		u.MaxRepoCreation = *form.MaxRepoCreation
++	}
+ 
+ 	if err := models.UpdateUser(u); err != nil {
+ 		if models.IsErrEmailAlreadyUsed(err) {
