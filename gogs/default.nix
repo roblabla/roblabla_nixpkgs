@@ -547,6 +547,7 @@ let
         sha256 = "0vrxil4vp682s2fn3fj2kmiv34f0ib8a3y62g1qfr7nhhbhqi4c5";
       };
       patches = [
+        ./go-gogs-client_addCollaborator.patch
         ./go-gogs-client_addOrgMembership.patch
         ./go-gogs-client_maxRepoCreationAPI.patch
       ];
