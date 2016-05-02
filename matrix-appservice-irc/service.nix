@@ -6,6 +6,10 @@ let
   cfg = config.services.matrix-appservice-irc;
   matrix-appservice-irc = (import ../default.nix).matrix-appservice-irc;
   configFile = pkgs.writeText "config.yaml" cfg.config;
+  registration = pkgs.runCommand "app-service-irc-config.yaml" { preferLocalBuild = true; } ''
+    cd ${cfg.package}/lib/node_modules/matrix-appservice-irc
+    ${cfg.package}/bin/matrix-appservice-irc -r -f $out -u ${cfg.url} -c ${configFile} -l ircbot
+  '';
 in {
   options = {
     services.matrix-appservice-irc = rec {
@@ -26,6 +30,20 @@ in {
           The matrix-appservice-irc configuration.
         '';
       };
+      url = mkOption {
+        type = types.string;
+        description = ''
+          The URL matrix-appservice-irc listens on.
+        '';
+        default = "http://localhost:7555";
+      };
+      port = mkOption {
+        type = types.int;
+        description = ''
+          The port matrix-appservice-irc listens on.
+        '';
+        default = 7555;
+      };
     };
   };
 
@@ -39,11 +57,21 @@ in {
       useDefaultShell = true;
     };
 
+    services.matrix-synapse.appServiceConfigFiles = [
+      registration
+    ];
     systemd.services.matrix-appservice-irc = {
       wantedBy = [ "multi-user.target" ];
+      preStart = ''
+        mkdir -p /var/lib/matrix-appservice-irc
+        chown matrix-appservice-irc:matrix-appservice-irc -R /var/lib/matrix-appservice-irc
+      '';
       serviceConfig = {
-        ExecStart = "${cfg.package}/bin/matrix-appservice-irc -c ${configFile}";
-        User = "norminette-ci";
+        PermissionsStartOnly = true;
+        ExecStart = "${cfg.package}/bin/matrix-appservice-irc -c ${configFile} -f ${registration} -p ${toString cfg.port}";
+        WorkingDirectory = "${cfg.package}/lib/node_modules/matrix-appservice-irc";
+        User = "matrix-appservice-irc";
+        Group = "matrix-appservice-irc";
       };
     };
   };
