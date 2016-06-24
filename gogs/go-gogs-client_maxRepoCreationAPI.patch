@@ -1,7 +1,13 @@
-diff --git a/admin_users.go b/admin_users.go
+commit 804cb8da4cb6367a00e6cab9f38bc41216ca183a
+Author: roblabla <robinlambertz+dev@gmail.com>
+Date:   Sun Mar 6 19:08:10 2016 +0100
+
+    Add optional MaxRepoCreation field to EditUserOption
+
+diff --git a/admin_user.go b/admin_user.go
 index f8e26d9..3ac4cc3 100644
---- a/admin_users.go
-+++ b/admin_users.go
+--- a/admin_user.go
++++ b/admin_user.go
 @@ -42,6 +42,7 @@ type EditUserOption struct {
  	Admin            *bool  `json:"admin"`
  	AllowGitHook     *bool  `json:"allow_git_hook"`

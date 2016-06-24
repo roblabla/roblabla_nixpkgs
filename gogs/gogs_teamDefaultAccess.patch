@@ -1,0 +1,244 @@
+commit 491052e6789c72f3b7af9418f8f4036535d5db17
+Author: roblabla <robinlambertz+dev@gmail.com>
+Date:   Tue Jun 7 12:09:45 2016 +0200
+
+    Add a default repository permission to orgs.
+
+diff --git a/cmd/web.go b/cmd/web.go
+index f88c338..48f8490 100644
+--- a/cmd/web.go
++++ b/cmd/web.go
+@@ -382,6 +382,9 @@ func runWeb(ctx *cli.Context) error {
+ 					m.Post("/slack/:id", bindIgnErr(auth.NewSlackHookForm{}), repo.SlackHooksEditPost)
+ 				})
+ 
++				m.Combo("/member_privileges").Get(org.SettingsMemberPrivileges).
++					Post(bindIgnErr(auth.UpdateOrgDefaultRepoPerm{}), org.SettingsUpdateDefaultRepoPerm)
++
+ 				m.Route("/delete", "GET,POST", org.SettingsDelete)
+ 			})
+ 
+diff --git a/conf/locale/locale_en-US.ini b/conf/locale/locale_en-US.ini
+index 6bbf1e1..a2fa2e1 100644
+--- a/conf/locale/locale_en-US.ini
++++ b/conf/locale/locale_en-US.ini
+@@ -758,6 +758,19 @@ settings.delete_org_title = Organization Deletion
+ settings.delete_org_desc = This organization is going to be deleted permanently, do you want to continue?
+ settings.hooks_desc = Add webhooks that will be triggered for <strong>all repositories</strong> under this organization.
+ 
++settings.member_privileges = Member privileges
++settings.default_repo_perm = Default repository permission
++settings.default_repo_perm_desc = Choose the default permission level for organization members.
++settings.default_repo_perm.admin = Admin
++settings.default_repo_perm.admin_desc = Members will be able to clone, pull, push, and add new collaborators to all repositories.
++settings.default_repo_perm.write = Write
++settings.default_repo_perm.write_desc = Members will be able to clone, pull and push all repositories.
++settings.default_repo_perm.read = Read
++settings.default_repo_perm.read_desc = Members will be able to clone and pull all repositories.
++settings.default_repo_perm.none = None
++settings.default_repo_perm.none_desc = Members will only be able to clone and pull public repositories. To give a member additional access, you'll need to add them to teams or make them collaborators on individual repositories.
++settings.save = Save
++
+ members.membership_visibility = Membership Visibility:
+ members.public = Public
+ members.public_helper = make private
+diff --git a/models/access.go b/models/access.go
+index b4c1349..2e590cd 100644
+--- a/models/access.go
++++ b/models/access.go
+@@ -38,12 +38,14 @@ func (mode AccessMode) String() string {
+ // ParseAccessMode returns corresponding access mode to given permission string.
+ func ParseAccessMode(permission string) AccessMode {
+ 	switch permission {
++	case "read":
++		return ACCESS_MODE_READ
+ 	case "write":
+ 		return ACCESS_MODE_WRITE
+ 	case "admin":
+ 		return ACCESS_MODE_ADMIN
+ 	default:
+-		return ACCESS_MODE_READ
++		return ACCESS_MODE_NONE
+ 	}
+ }
+ 
+@@ -72,10 +74,19 @@ func accessLevel(e Engine, u *User, repo *Repository) (AccessMode, error) {
+ 	}
+ 
+ 	a := &Access{UserID: u.Id, RepoID: repo.ID}
+-	if has, err := e.Get(a); !has || err != nil {
++	if has, err := e.Get(a); has || err != nil {
++		return a.Mode, err
++	}
++
++	if err := repo.GetOwner(); err != nil {
+ 		return mode, err
+ 	}
+-	return a.Mode, nil
++
++	if repo.Owner.IsOrgMember(u.Id) && repo.Owner.DefaultRepoPerm > mode {
++		mode = repo.Owner.DefaultRepoPerm
++	}
++
++	return mode, nil
+ }
+ 
+ // AccessLevel returns the Access a user has to a repository. Will return NoneAccess if the
+diff --git a/models/org.go b/models/org.go
+index bac3ad2..120bb95 100644
+--- a/models/org.go
++++ b/models/org.go
+@@ -92,6 +92,12 @@ func (org *User) RemoveOrgRepo(repoID int64) error {
+ 	return org.removeOrgRepo(x, repoID)
+ }
+ 
++func (org *User) UpdateDefaultRepoPerm(mode AccessMode) error {
++	org.DefaultRepoPerm = mode
++	_, err := x.Id(org.Id).Cols("default_repo_perm").Update(org)
++	return err
++}
++
+ // CreateOrganization creates record of a new organization.
+ func CreateOrganization(org, owner *User) (err error) {
+ 	if err = IsUsableName(org.Name); err != nil {
+@@ -461,8 +467,11 @@ WHERE team_user.org_id = ? AND team_user.uid = ?`, org.Id, userID).Find(&teams);
+ 	repos := make([]*Repository, 0, 5)
+ 	if err = x.Sql(fmt.Sprintf(`SELECT repository.* FROM repository
+ INNER JOIN team_repo ON team_repo.repo_id = repository.id
+-WHERE (repository.owner_id = ? AND repository.is_private = ?) OR team_repo.team_id IN (%s)
+-GROUP BY repository.id`, strings.Join(teamIDs, ",")), org.Id, false).Find(&repos); err != nil {
++INNER JOIN org_user ON org_user.org_id = repository.owner_id
++INNER JOIN user AS org ON org.id = repository.owner_id
++WHERE repository.owner_id = ? AND (repository.is_private = ? OR
++(org_user.uid = ? AND org.default_repo_perm > 0) OR team_repo.team_id IN (%s))
++GROUP BY repository.id`, strings.Join(teamIDs, ",")), org.Id, false, userID).Find(&repos); err != nil {
+ 		return fmt.Errorf("get repositories: %v", err)
+ 	}
+ 	org.Repos = repos
+diff --git a/models/user.go b/models/user.go
+index e6717ae..2ec3cb5 100644
+--- a/models/user.go
++++ b/models/user.go
+@@ -104,6 +104,7 @@ type User struct {
+ 	NumMembers  int
+ 	Teams       []*Team `xorm:"-"`
+ 	Members     []*User `xorm:"-"`
++	DefaultRepoPerm	AccessMode
+ }
+ 
+ func (u *User) BeforeInsert() {
+diff --git a/modules/auth/org.go b/modules/auth/org.go
+index 53ef624..5dad22d 100644
+--- a/modules/auth/org.go
++++ b/modules/auth/org.go
+@@ -37,6 +37,14 @@ func (f *UpdateOrgSettingForm) Validate(ctx *macaron.Context, errs binding.Error
+ 	return validate(errs, ctx.Data, f, ctx.Locale)
+ }
+ 
++type UpdateOrgDefaultRepoPerm struct {
++	Permission  string
++}
++
++func (f *UpdateOrgDefaultRepoPerm) Validate(ctx *macaron.Context, errs binding.Errors) binding.Errors {
++	return validate(errs, ctx.Data, f, ctx.Locale)
++}
++
+ // ___________
+ // \__    ___/___ _____    _____
+ //   |    |_/ __ \\__  \  /     \
+diff --git a/routers/org/setting.go b/routers/org/setting.go
+index c50e18d..d63ee06 100644
+--- a/routers/org/setting.go
++++ b/routers/org/setting.go
+@@ -19,9 +19,10 @@ import (
+ )
+ 
+ const (
+-	SETTINGS_OPTIONS base.TplName = "org/settings/options"
+-	SETTINGS_DELETE  base.TplName = "org/settings/delete"
+-	SETTINGS_HOOKS   base.TplName = "org/settings/hooks"
++	SETTINGS_OPTIONS           base.TplName = "org/settings/options"
++	SETTINGS_DELETE            base.TplName = "org/settings/delete"
++	SETTINGS_HOOKS             base.TplName = "org/settings/hooks"
++	SETTINGS_MEMBER_PRIVILEGES base.TplName = "org/settings/member_privileges"
+ )
+ 
+ func Settings(ctx *context.Context) {
+@@ -175,3 +176,20 @@ func DeleteWebhook(ctx *context.Context) {
+ 		"redirect": ctx.Org.OrgLink + "/settings/hooks",
+ 	})
+ }
++
++func SettingsMemberPrivileges(ctx *context.Context) {
++	ctx.Data["PageIsSettingsMemberPrivileges"] = true
++	ctx.Data["DefaultRepoPerm"] = ctx.Org.Organization.DefaultRepoPerm
++	ctx.HTML(200, SETTINGS_MEMBER_PRIVILEGES)
++}
++
++func SettingsUpdateDefaultRepoPerm(ctx *context.Context, form auth.UpdateOrgDefaultRepoPerm) {
++	if err := ctx.Org.Organization.UpdateDefaultRepoPerm(models.ParseAccessMode(form.Permission)); err != nil {
++		ctx.Flash.Error(err.Error())
++	} else {
++		ctx.Flash.Success(ctx.Tr("org.settings.update_default_repo_perm_success"))
++	}
++	ctx.Data["PageIsSettingsMemberPrivileges"] = true
++	ctx.Data["DefaultRepoPerm"] = ctx.Org.Organization.DefaultRepoPerm
++	ctx.Redirect(ctx.Org.OrgLink + "/settings/member_privileges")
++}
+diff --git a/templates/org/settings/member_privileges.tmpl b/templates/org/settings/member_privileges.tmpl
+new file mode 100644
+index 0000000..8bd3700
+--- /dev/null
++++ b/templates/org/settings/member_privileges.tmpl
+@@ -0,0 +1,37 @@
++{{template "base/head" .}}
++<div class="organization settings options">
++	{{template "org/header" .}}
++	<div class="ui container">
++		<div class="ui grid">
++			{{template "org/settings/navbar" .}}
++			<div class="twelve wide column content">
++				{{template "base/alert" .}}
++				<h4 class="ui top attached header">
++					{{.i18n.Tr "org.settings.default_repo_perm"}}
++				</h4>
++				<div class="ui attached segment">
++					<form class="ui form" action="{{.Link}}" method="post">
++						{{.CsrfTokenHtml}}
++						<div class="item">
++							{{.i18n.Tr "org.settings.default_repo_perm_desc"}}
++						</div>
++						<input {{if ge .DefaultRepoPerm 3}}checked{{end}} id="admin" name="permission" value="admin" type="radio">
++						<label for="admin">{{.i18n.Tr "org.settings.default_repo_perm.admin"}}</label>
++						<div>{{.i18n.Tr "org.settings.default_repo_perm.admin_desc"}}</div>
++						<input {{if eq .DefaultRepoPerm 2}}checked{{end}} id="write" name="permission" value="write" type="radio">
++						<label for="write">{{.i18n.Tr "org.settings.default_repo_perm.write"}}</label>
++						<div>{{.i18n.Tr "org.settings.default_repo_perm.write_desc"}}</div>
++						<input {{if eq .DefaultRepoPerm 1}}checked{{end}} id="read" name="permission" value="read" type="radio">
++						<label for="read">{{.i18n.Tr "org.settings.default_repo_perm.read"}}</label>
++						<div>{{.i18n.Tr "org.settings.default_repo_perm.read_desc"}}</div>
++						<input {{if eq .DefaultRepoPerm 0}}checked{{end}} id="none" name="permission" value="none" type="radio">
++						<label for="none">{{.i18n.Tr "org.settings.default_repo_perm.none"}}</label>
++						<div>{{.i18n.Tr "org.settings.default_repo_perm.none_desc"}}</div>
++						<button class="ui green button">{{.i18n.Tr "org.settings.save"}}</button>
++					</form>
++				</div>
++			</div>
++		</div>
++	</div>
++</div>
++{{template "base/footer" .}}
+diff --git a/templates/org/settings/navbar.tmpl b/templates/org/settings/navbar.tmpl
+index 09fca5d..819f41b 100644
+--- a/templates/org/settings/navbar.tmpl
++++ b/templates/org/settings/navbar.tmpl
+@@ -4,6 +4,9 @@
+ 		<a class="{{if .PageIsSettingsOptions}}active{{end}} item" href="{{.OrgLink}}/settings">
+ 			{{.i18n.Tr "org.settings.options"}}
+ 		</a>
++		<a class="{{if .PageIsSettingsMemberPrivileges}}active{{end}} item" href="{{.OrgLink}}/settings/member_privileges">
++			{{.i18n.Tr "org.settings.member_privileges"}}
++		</a>
+ 		<a class="{{if .PageIsSettingsHooks}}active{{end}} item" href="{{.OrgLink}}/settings/hooks">
+ 			{{.i18n.Tr "repo.settings.hooks"}}
+ 		</a>

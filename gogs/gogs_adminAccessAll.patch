@@ -1,0 +1,28 @@
+diff --git a/models/access.go b/models/access.go
+index b4c1349..aa40133 100644
+--- a/models/access.go
++++ b/models/access.go
+@@ -67,6 +67,10 @@ func accessLevel(e Engine, u *User, repo *Repository) (AccessMode, error) {
+ 		return mode, nil
+ 	}
+ 
++	if u.IsAdmin {
++		return ACCESS_MODE_ADMIN, nil
++	}
++
+ 	if u.Id == repo.OwnerID {
+ 		return ACCESS_MODE_OWNER, nil
+ 	}
+diff --git a/routers/user/profile.go b/routers/user/profile.go
+index 847cffd..77c58af 100644
+--- a/routers/user/profile.go
++++ b/routers/user/profile.go
+@@ -93,7 +93,7 @@ func Profile(ctx *context.Context) {
+ 		}
+ 	default:
+ 		var err error
+-		ctx.Data["Repos"], err = models.GetRepositories(u.Id, ctx.IsSigned && ctx.User.Id == u.Id)
++		ctx.Data["Repos"], err = models.GetRepositories(u.Id, ctx.IsSigned && (ctx.User.IsAdmin || ctx.User.Id == u.Id))
+ 		if err != nil {
+ 			ctx.Handle(500, "GetRepositories", err)
+ 			return

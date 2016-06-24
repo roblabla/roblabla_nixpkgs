@@ -158,6 +158,7 @@ in {
       wantedBy = [ "multi-user.target" ];
       environment.HOME = "${cfg.statePath}";
       environment.CURL_CA_BUNDLE = "/etc/ssl/certs/ca-certificates.crt";
+      environment.GOGS_WORK_DIR = "${cfg.packages.gogs}/share/go/src/github.com/gogits/gogs";
       preStart = ''
         mkdir -p ${cfg.statePath}
         chown ${cfg.user}:${cfg.group} -R ${cfg.statePath}
@@ -166,7 +167,7 @@ in {
       serviceConfig = {
         PermissionsStartOnly = true;
         Type = "simple";
-        ExecStart = "/bin/sh -c 'cd ${cfg.statePath} && ${cfg.packages.gogs.bin}/bin/gogs web -c ${cfg.statePath}/app.ini -p ${toString cfg.port}'";
+        ExecStart = "${cfg.packages.gogs.bin}/bin/gogs web -c ${cfg.statePath}/app.ini -p ${toString cfg.port}";
         User = cfg.user;
         Group = cfg.group;
       };

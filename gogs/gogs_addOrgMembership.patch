@@ -1,18 +1,24 @@
+commit 49a78f3b1849f8999e2449aebcc966ffd7810fdb
+Author: roblabla <robinlambertz+dev@gmail.com>
+Date:   Sun Mar 6 16:55:20 2016 +0100
+
+    Add the AddOrgMembership API endpoint
+
 diff --git a/routers/api/v1/api.go b/routers/api/v1/api.go
-index 04b392f..34344b7 100644
+index 5050b8c..0ecf1d6 100644
 --- a/routers/api/v1/api.go
 +++ b/routers/api/v1/api.go
-@@ -199,6 +199,7 @@ func RegisterRoutes(m *macaron.Macaron) {
- 		// Organizations
- 		m.Get("/user/orgs", ReqToken(), org.ListMyOrgs)
- 		m.Get("/users/:username/orgs", org.ListUserOrgs)
-+		m.Put("/orgs/:orgname/memberships/:username", bind(api.AddOrgMembershipOption{}), org.AddOrgMembership)
- 		m.Combo("/orgs/:orgname").Get(org.Get).Patch(bind(api.EditOrgOption{}), org.Edit)
+@@ -249,6 +249,7 @@ func RegisterRoutes(m *macaron.Macaron) {
+ 		m.Group("/orgs/:orgname", func() {
+ 			m.Combo("").Get(org.Get).Patch(bind(api.EditOrgOption{}), org.Edit)
+ 			m.Combo("/teams").Get(org.ListTeams)
++			m.Put("/memberships/:username", bind(api.AddOrgMembershipOption{}), org.AddOrgMembership)
+ 		}, OrgAssignment(true))
  
- 		m.Any("/*", func(ctx *middleware.Context) {
+ 		m.Any("/*", func(ctx *context.Context) {
 diff --git a/routers/api/v1/org/members.go b/routers/api/v1/org/members.go
 new file mode 100644
-index 0000000..e4539c6
+index 0000000..bb5e634
 --- /dev/null
 +++ b/routers/api/v1/org/members.go
 @@ -0,0 +1,47 @@
@@ -25,12 +31,12 @@ index 0000000..e4539c6
 +import (
 +	api "github.com/gogits/go-gogs-client"
 +
-+	"github.com/gogits/gogs/modules/middleware"
++	"github.com/gogits/gogs/modules/context"
 +	"github.com/gogits/gogs/routers/api/v1/convert"
 +	"github.com/gogits/gogs/routers/api/v1/user"
 +)
 +
-+func AddOrgMembership(ctx *middleware.Context, form api.AddOrgMembershipOption) {
++func AddOrgMembership(ctx *context.APIContext, form api.AddOrgMembershipOption) {
 +	org := user.GetUserByParamsName(ctx, ":orgname")
 +	member := user.GetUserByParamsName(ctx, ":username")
 +	if ctx.Written() {
@@ -38,28 +44,28 @@ index 0000000..e4539c6
 +	}
 +
 +	if !org.IsOwnedBy(ctx.User.Id) {
-+		ctx.Error(403)
++		ctx.Status(403)
 +		return
 +	}
 +
 +	if err := org.AddMember(member.Id); err != nil {
-+		ctx.APIError(500, "AddMember", err)
++		ctx.Error(500, "AddMember", err)
 +		return
 +	}
 +	if form.Role == "admin" {
 +		team, err := org.GetOwnerTeam();
 +		if err != nil {
-+			ctx.APIError(500, "GetOwnerTeam", err)
++			ctx.Error(500, "GetOwnerTeam", err)
 +			return
 +		}
 +		if err := team.AddMember(member.Id); err != nil {
-+			ctx.APIError(500, "AddMember", err)
++			ctx.Error(500, "AddMember", err)
 +			return
 +		}
 +	}
 +	ret := map[string]interface{} {
-+		"organization": convert.ToApiOrganization(org),
-+		"user": convert.ToApiUser(member),
++		"organization": convert.ToOrganization(org),
++		"user": convert.ToUser(member),
 +	}
 +	ctx.JSON(200, ret)
 +}

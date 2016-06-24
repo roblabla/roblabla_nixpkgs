@@ -1,0 +1,407 @@
+[
+  {
+    "goPackagePath": "github.com/Unknwon/cae",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/Unknwon/cae",
+      "rev": "7f5e046bc8a6c3cde743c233b96ee4fd84ee6ecd",
+      "sha256": "1lc7v93d72g1rf8dyk8kw4m15q603mgh7ifz26si4k0csxwzkvdr"
+    }
+  },
+  {
+    "goPackagePath": "github.com/Unknwon/com",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/Unknwon/com",
+      "rev": "28b053d5a2923b87ce8c5a08f3af779894a72758",
+      "sha256": "09i9slj4zbsqmwkkx9bqi7cgpv6hqby6r98l6qx1wag89qijybz2"
+    }
+  },
+  {
+    "goPackagePath": "github.com/Unknwon/i18n",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/Unknwon/i18n",
+      "rev": "39d6f2727e0698b1021ceb6a77c1801aa92e7d5d",
+      "sha256": "1f4s9srdaqw2yqgc3d76vww3glbwka2f5q4zrwn8bb66kcazbfb7"
+    }
+  },
+  {
+    "goPackagePath": "github.com/Unknwon/paginater",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/Unknwon/paginater",
+      "rev": "7748a72e01415173a27d79866b984328e7b0c12b",
+      "sha256": "0ighsa75ixgx6c4hc397c06lapf0pz50cj3cgkdvssp9an38kw2c"
+    }
+  },
+  {
+    "goPackagePath": "github.com/bradfitz/gomemcache",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/bradfitz/gomemcache",
+      "rev": "fb1f79c6b65acda83063cbc69f6bba1522558bfc",
+      "sha256": "0mq5rn07bbpy2yla7hassrmj966p6r7ffbf9w41l31yy0fc07i68"
+    }
+  },
+  {
+    "goPackagePath": "github.com/codegangsta/cli",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/codegangsta/cli",
+      "rev": "e5bef42c62aa7d25aba4880dc02b7624f01e9e19",
+      "sha256": "1g0z2klbaivd0w1fwf1k1dkyk8jbq28qd7fvczjv0yj6hg4vz1wq"
+    }
+  },
+  {
+    "goPackagePath": "github.com/go-macaron/binding",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/go-macaron/binding",
+      "rev": "bd00823a7e9aa00cb3b1738fde244573ba7cce2c",
+      "sha256": "1bcmr36wf587brwldr1mxg3rzvzga2djr88fw6apmlff6ld5n21c"
+    }
+  },
+  {
+    "goPackagePath": "github.com/go-macaron/cache",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/go-macaron/cache",
+      "rev": "56173531277692bc2925924d51fda1cd0a6b8178",
+      "sha256": "1116a22wm43q2l54nnycgli90kix787j20mpgya9qb6xnglcck59"
+    }
+  },
+  {
+    "goPackagePath": "github.com/go-macaron/captcha",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/go-macaron/captcha",
+      "rev": "8aa5919789ab301e865595eb4b1114d6b9847deb",
+      "sha256": "0wdihxbl7yw4wg2x0wb09kv9swfpr5j06wsj4hxn3xcbpqi9viwm"
+    }
+  },
+  {
+    "goPackagePath": "github.com/go-macaron/csrf",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/go-macaron/csrf",
+      "rev": "6a9a7df172cc1fcd81e4585f44b09200b6087cc0",
+      "sha256": "173da2hl9fcfgkn0nv1ws3pr0gyyp88amhj2bfk4414k5a3r0nsa"
+    }
+  },
+  {
+    "goPackagePath": "github.com/go-macaron/gzip",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/go-macaron/gzip",
+      "rev": "cad1c6580a07c56f5f6bc52d66002a05985c5854",
+      "sha256": "12mq3dd1vd0jbi80fxab4ysmipbz9zhbm9nw6y6a6bw3byc8w4jf"
+    }
+  },
+  {
+    "goPackagePath": "github.com/go-macaron/i18n",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/go-macaron/i18n",
+      "rev": "ef57533c3b0fc2d8581deda14937e52f11a203ab",
+      "sha256": "1nkrcnpjl3x6fhjss2vp29mnvam20vpvxvxpfg1zspi1rjmpyhqy"
+    }
+  },
+  {
+    "goPackagePath": "github.com/go-macaron/inject",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/go-macaron/inject",
+      "rev": "c5ab7bf3a307593cd44cb272d1a5beea473dd072",
+      "sha256": "0v7plrgwx9qn9iknm7p5fr5c53zzx5aaqvdcgyh6hnfwjjf5zny4"
+    }
+  },
+  {
+    "goPackagePath": "github.com/go-macaron/session",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/go-macaron/session",
+      "rev": "66031fcb37a0fff002a1f028eb0b3a815c78306b",
+      "sha256": "1prrfv8xdlyxrdbagbqzjkx69x74hjzif5ki4lzl2y6fk3nb0cd5"
+    }
+  },
+  {
+    "goPackagePath": "github.com/go-macaron/toolbox",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/go-macaron/toolbox",
+      "rev": "99a42f20e9e88daec5c0d7beb4e7eac134680ab0",
+      "sha256": "0r6ksiqzrii7b9vv8daz68044pyifsxmpz48m6h8m6l3h9ygz8cx"
+    }
+  },
+  {
+    "goPackagePath": "github.com/go-sql-driver/mysql",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/go-sql-driver/mysql",
+      "rev": "3654d25ec346ee8ce71a68431025458d52a38ac0",
+      "sha256": "0yr44mbx8632ynhmy8hg5ybwsqsc7byy3n7aqawq7jgih83ivdvq"
+    }
+  },
+  {
+    "goPackagePath": "github.com/go-xorm/core",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/go-xorm/core",
+      "rev": "edde1c5ab80e3cda107f6b93af6df894caba41ea",
+      "sha256": "0ffn3zlfcsi0a4ph7iigpjgkdzf1fq9s718ws1vj6cka7xbwks89"
+    }
+  },
+  {
+    "goPackagePath": "github.com/go-xorm/xorm",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/go-xorm/xorm",
+      "rev": "8150bebe6a68d3e86a14e3aa0cbac4873c05131d",
+      "sha256": "0fkd0jp134dvl7ml0pb7mxmdx5i5cg7mgzncx9wa8bfk4wj8bzw9"
+    }
+  },
+  {
+    "goPackagePath": "github.com/gogits/chardet",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/gogits/chardet",
+      "rev": "2404f777256163ea3eadb273dada5dcb037993c0",
+      "sha256": "1dki2pqhnzcmzlqrq4d4jwknnjxm82xqnmizjjdblb6h98ans1cd"
+    }
+  },
+  {
+    "goPackagePath": "github.com/gogits/cron",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/gogits/cron",
+      "rev": "96040e4fab17baa0391ce571694e4ccb5fce5dac",
+      "sha256": "1a1f38mzjhdz7n5fclxq2ninqngcqjqx1jy1p4533an3jyjhyh10"
+    }
+  },
+  {
+    "goPackagePath": "github.com/gogits/git-module",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/gogits/git-module",
+      "rev": "1f1117c3969f53809bb09f6da07ec2493b2aa07f",
+      "sha256": "02c3dk3i9i5djr9sdhi46d2kh2vs22lim3ya9jz4qflxizb8bgsy"
+    }
+  },
+  {
+    "goPackagePath": "github.com/gogits/gogs",
+    "fetch": {
+      "type": "git",
+      "url": "git://github.com/gogits/gogs.git",
+      "rev": "26342b0c2457ba3b8a79e05be75f85258b0e82eb",
+      "sha256": "1icwh684ivrhpwr3xlk861h8hydj7wrap5m7qd7rzqnndlmajrmv"
+    }
+  },
+  {
+    "goPackagePath": "github.com/issue9/identicon",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/issue9/identicon",
+      "rev": "d36b54562f4cf70c83653e13dc95c220c79ef521",
+      "sha256": "0y82b3gq8rpqglvf3lsqhgp5djfdammwd1w24k3i97iqls0rch7l"
+    }
+  },
+  {
+    "goPackagePath": "github.com/jaytaylor/html2text",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/jaytaylor/html2text",
+      "rev": "52d9b785554a1918cb09909b89a1509a98b853fd",
+      "sha256": "1hhvabh01ghbpxml245w1786vcxhaaqvcrjssfw0aph1idc9rwix"
+    }
+  },
+  {
+    "goPackagePath": "github.com/klauspost/compress",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/klauspost/compress",
+      "rev": "14eb9c4951195779ecfbec34431a976de7335b0a",
+      "sha256": "0lzkifj6jb365wvk340zywpiah7g16zkd5f7pcbi0gjym0a9ljvc"
+    }
+  },
+  {
+    "goPackagePath": "github.com/klauspost/cpuid",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/klauspost/cpuid",
+      "rev": "09cded8978dc9e80714c4d85b0322337b0a1e5e0",
+      "sha256": "05l8pfch0gvxh0khapwxhsk4xajn40vbjr360n49vh2z5531v2xq"
+    }
+  },
+  {
+    "goPackagePath": "github.com/klauspost/crc32",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/klauspost/crc32",
+      "rev": "19b0b332c9e4516a6370a0456e6182c3b5036720",
+      "sha256": "0fcnsf1m0bzplgp28dz8skza6l7rc65s180x85rzbdl9l3zzi43r"
+    }
+  },
+  {
+    "goPackagePath": "github.com/lib/pq",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/lib/pq",
+      "rev": "ee1442bda7bd1b6a84e913bdb421cb1874ec629d",
+      "sha256": "09nvbls0ka9v6bla9b2ls3cnjm2fsynzlbn4d2a3p0rmqnha35g7"
+    }
+  },
+  {
+    "goPackagePath": "github.com/mcuadros/go-version",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/mcuadros/go-version",
+      "rev": "d52711f8d6bea8dc01efafdb68ad95a4e2606630",
+      "sha256": "08ps27vvn77jhrnks8p8mx5cwgb1ikhaddcnrpgpz7aq905a5kzn"
+    }
+  },
+  {
+    "goPackagePath": "github.com/microcosm-cc/bluemonday",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/microcosm-cc/bluemonday",
+      "rev": "4ac6f27528d0a3f2a59e0b0a6f6b3ff0bb89fe20",
+      "sha256": "0a927aimqjhpb47zn4xn4hv201davfkb8x21nckg2zrjzbwngkyw"
+    }
+  },
+  {
+    "goPackagePath": "github.com/nfnt/resize",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/nfnt/resize",
+      "rev": "4d93a29130b1b6aba503e2aa8b50f516213ea80e",
+      "sha256": "1s6z241726nd1xd5rwlnj6l4p0na4v20ibfg5sh9cp7pl98mn5gv"
+    }
+  },
+  {
+    "goPackagePath": "github.com/russross/blackfriday",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/russross/blackfriday",
+      "rev": "1d6b8e9301e720b08a8938b8c25c018285885438",
+      "sha256": "112fhls0nb7zfv6awy3j5mv190qbf4pka785pnhf69kr5nv4hz1r"
+    }
+  },
+  {
+    "goPackagePath": "github.com/satori/go.uuid",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/satori/go.uuid",
+      "rev": "879c5887cd475cd7864858769793b2ceb0d44feb",
+      "sha256": "1nbydsmjr60904kz5d46nib0zid5kcv4gk9wayi44gn5wlzz80zp"
+    }
+  },
+  {
+    "goPackagePath": "github.com/sergi/go-diff",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/sergi/go-diff",
+      "rev": "ec7fdbb58eb3e300c8595ad5ac74a5aa50019cc7",
+      "sha256": "1lpxhwqbypssj2vhlkj11fircllvxx4n985w6f76id5jany05h2w"
+    }
+  },
+  {
+    "goPackagePath": "github.com/shurcooL/sanitized_anchor_name",
+    "fetch": {
+      "type": "git",
+      "url": "https://github.com/shurcooL/sanitized_anchor_name",
+      "rev": "10ef21a441db47d8b13ebcc5fd2310f636973c77",
+      "sha256": "1cnbzcf47cn796rcjpph1s64qrabhkv5dn9sbynsy7m9zdwr5f01"
+    }
+  },
+  {
+    "goPackagePath": "golang.org/x/crypto",
+    "fetch": {
+      "type": "git",
+      "url": "https://go.googlesource.com/crypto",
+      "rev": "f3241ce8505855877cc8a9717bd61a0f7c4ea83c",
+      "sha256": "0wxfnbhaq1m3i5jylww9llm2xl9hk33q6nxyz5i475rfrg0p3wsq"
+    }
+  },
+  {
+    "goPackagePath": "golang.org/x/net",
+    "fetch": {
+      "type": "git",
+      "url": "https://go.googlesource.com/net",
+      "rev": "3f122ce3dbbe488b7e6a8bdb26f41edec852a40b",
+      "sha256": "112gf957672h1dxri0x9vbccbv1q91wfay18zs3n87f5ni81c4hx"
+    }
+  },
+  {
+    "goPackagePath": "golang.org/x/text",
+    "fetch": {
+      "type": "git",
+      "url": "https://go.googlesource.com/text",
+      "rev": "3b39eb1f65eff3fc1f2746b6f7362d6ad1dcc4ad",
+      "sha256": "1q432dpqxqs1b8ww5vyx5gikvfd972nd6yw1n7bsac6jjycwxbai"
+    }
+  },
+  {
+    "goPackagePath": "gopkg.in/asn1-ber.v1",
+    "fetch": {
+      "type": "git",
+      "url": "https://gopkg.in/asn1-ber.v1",
+      "rev": "4e86f4367175e39f69d9358a5f17b4dda270378d",
+      "sha256": "13p8s74kzklb5lklfpxwxb78rknihawv1civ4s9bfqx565010fwk"
+    }
+  },
+  {
+    "goPackagePath": "gopkg.in/bufio.v1",
+    "fetch": {
+      "type": "git",
+      "url": "https://gopkg.in/bufio.v1",
+      "rev": "567b2bfa514e796916c4747494d6ff5132a1dfce",
+      "sha256": "1z5pj778hdianlfj14p0d67g69v4gc2kvn6jg27z5jf75a88l19b"
+    }
+  },
+  {
+    "goPackagePath": "gopkg.in/gomail.v2",
+    "fetch": {
+      "type": "git",
+      "url": "https://gopkg.in/gomail.v2",
+      "rev": "81ebce5c23dfd25c6c67194b37d3dd3f338c98b1",
+      "sha256": "0zdykrv5s19lnq0g49p6njldy4cpk4g161vyjafiw7f84h8r28mc"
+    }
+  },
+  {
+    "goPackagePath": "gopkg.in/ini.v1",
+    "fetch": {
+      "type": "git",
+      "url": "https://gopkg.in/ini.v1",
+      "rev": "72ba3e6b9e6b87e0c74c9a7a4dc86e8dd8ba4355",
+      "sha256": "0m6pg6gzscvwhvgv100y74gnwhw4blmisascvpq13r5mf2c54sld"
+    }
+  },
+  {
+    "goPackagePath": "gopkg.in/ldap.v2",
+    "fetch": {
+      "type": "git",
+      "url": "https://gopkg.in/ldap.v2",
+      "rev": "0e7db8eb77695b5a952f0e5d78df9ab160050c73",
+      "sha256": "16y6r60qgf2d3dwk21i11qsb8wlg7pkics1gk8jrhx3v978rybkk"
+    }
+  },
+  {
+    "goPackagePath": "gopkg.in/macaron.v1",
+    "fetch": {
+      "type": "git",
+      "url": "https://gopkg.in/macaron.v1",
+      "rev": "94a5ef7105036242f79e5e07a8eb8651d06c8533",
+      "sha256": "1b8ljwrh0gbscs3aqcgr34svnyk2d7vrrlvqrvcbdn2n6rx4f9xd"
+    }
+  },
+  {
+    "goPackagePath": "gopkg.in/redis.v2",
+    "fetch": {
+      "type": "git",
+      "url": "https://gopkg.in/redis.v2",
+      "rev": "e6179049628164864e6e84e973cfb56335748dea",
+      "sha256": "02hifpgak39y39lbn7v2ybbpk3rmb8nvmb3h3490frr8s4pfkb8h"
+    }
+  }
+]
