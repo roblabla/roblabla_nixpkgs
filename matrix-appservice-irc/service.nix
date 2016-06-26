@@ -5,83 +5,89 @@ with lib;
 let
   cfg = config.services.matrix-appservice-irc;
   matrix-appservice-irc = (import ../default.nix).matrix-appservice-irc;
+  boolToStr = b: if b then "true" else "false";
   mkRoom = r: ''{
     room: ${r.room},
     ircToMatrix: {
-      initial: ${r.ircToMatrix.initial},
-      incremental: ${r.ircToMatrix.incremental}
+      initial: ${boolToStr r.ircToMatrix.initial},
+      incremental: ${boolToStr r.ircToMatrix.incremental}
     }
   }'';
   mkChannel = c: ''{
     room: ${c.channel},
     ircToMatrix: {
-      initial: ${c.matrixToIrc.initial},
-      incremental: ${c.matrixToIrc.incremental}
+      initial: ${boolToStr c.matrixToIrc.initial},
+      incremental: ${boolToStr c.matrixToIrc.incremental}
     }
   }'';
   mkMapping = m: "${m.name}: ${builtins.toJSON m.maps}";
   mkServer = s: ''"${s.address}": {
     port: ${toString s.port},
-    ssl: ${toString s.ssl},
-    sslselfsign: ${toString s.sslselfsign},
+    ssl: ${boolToStr s.ssl},
+    sslselfsign: ${boolToStr s.sslselfsign},
     ${optionalString (s.password != null) ''
     password: "${s.password}",
     ''}
-    sendConnectionMessages: ${toString s.sendConnectionMessages},
+    sendConnectionMessages: ${boolToStr s.sendConnectionMessages},
     botConfig: {
-      enabled: ${toString s.botConfig_enabled},
-      nick: ${s.botConfig_nick},
+      enabled: ${boolToStr s.botConfig_enabled},
+      nick: "${s.botConfig_nick}",
       ${optionalString (s.botConfig_password != null) ''
       password: "${s.botConfig_password}",
       ''}
-      joinChannelsIfNoUsers: ${toString s.botConfig_joinChannelsIfNoUsers}
+      joinChannelsIfNoUsers: ${boolToStr s.botConfig_joinChannelsIfNoUsers}
     },
     privateMessages: {
-      enabled: ${toString s.privateMessages_enabled}
+      enabled: ${boolToStr s.privateMessages_enabled}
     },
     dynamicChannels: {
-      enabled: ${toString s.dynamicChannels_enabled},
-      createAlias: ${toString s.dynamicChannels_createAlias},
-      published: ${toString s.dynamicChannels_published},
-      joinRule: ${s.dynamicChannels_joinRule},
-      federate: ${toString s.dynamicChannels_federate},
-      aliasTemplate: ${s.dynamicChannels_aliasTemplate},
+      enabled: ${boolToStr s.dynamicChannels_enabled},
+      createAlias: ${boolToStr s.dynamicChannels_createAlias},
+      published: ${boolToStr s.dynamicChannels_published},
+      joinRule: "${s.dynamicChannels_joinRule}",
+      federate: ${boolToStr s.dynamicChannels_federate},
+      aliasTemplate: "${s.dynamicChannels_aliasTemplate}",
       whitelist: ${builtins.toJSON s.dynamicChannels_whitelist},
       exclude: ${builtins.toJSON s.dynamicChannels_exclude}
     },
     membershipLists: {
-      enabled: ${toString s.membershipLists_enabled},
+      enabled: ${boolToStr s.membershipLists_enabled},
       global: {
         ircToMatrix: {
-          initial: ${toString s.membershipLists_global_ircToMatrix.initial},
-          incremental: ${toString s.membershipLists_global_ircToMatrix.incremental}
+          initial: ${boolToStr s.membershipLists_global_ircToMatrix.initial},
+          incremental: ${boolToStr s.membershipLists_global_ircToMatrix.incremental}
         },
         matrixToIrc: {
-          initial: ${toString s.membershipLists_global_matrixToIrc.initial},
-          incremental: ${toString s.membershipLists_global_matrixToIrc.incremental}
+          initial: ${boolToStr s.membershipLists_global_matrixToIrc.initial},
+          incremental: ${boolToStr s.membershipLists_global_matrixToIrc.incremental}
         }
       },
-      rooms: [
-        ${concatStringsSep "," (map mkRoom s.membershipLists_rooms)}
-      ],
-      channels: [
-        ${concatStringsSep "," (map mkChannel s.membershipLists_channels)}
-      ]
+      '' +
+      #''
+      #rooms: [
+      #  ${concatStringsSep "," (map mkRoom s.membershipLists_rooms)}
+      #],
+      #channels: [
+      #  ${concatStringsSep "," (map mkChannel s.membershipLists_channels)}
+      #]'' +
+      ''
     },
     mappings: {
       ${concatStringsSep "," (map mkMapping s.mappings)}
     },
     matrixClients: {
-      userTemplate: ${s.matrixClients_userTemplate},
-      displayName: ${s.matrixClients_displayName}
+      userTemplate: "${s.matrixClients_userTemplate}",
+      displayName: "${s.matrixClients_displayName}"
     },
     ircClients: {
-      nickTemplate: ${s.ircClients_nickTemplate},
-      allowNickChanges: ${toString s.ircClients_allowNickChanges},
+      nickTemplate: "${s.ircClients_nickTemplate}",
+      allowNickChanges: ${boolToStr s.ircClients_allowNickChanges},
       maxClients: ${toString s.ircClients_maxClients},
+      ${optionalString (s.ircClients_ipv6_prefix != null) ''
       ipv6: {
-        prefix: ${s.ircClients_ipv6_prefix}
+        prefix: "${s.ircClients_ipv6_prefix}"
       },
+      ''}
       idleTimeout: ${toString s.ircClients_idleTimeout}
     }
   }'';
@@ -91,13 +97,13 @@ let
     domain: ${cfg.homeserver_domain}
   ircService:
     ident:
-      enabled: ${toString cfg.ident_enabled}
+      enabled: ${boolToStr cfg.ident_enabled}
       port: ${toString cfg.ident_port}
     logging:
       level: ${cfg.logging_level}
       logfile: ${cfg.logging_logfile}
       errfile: ${cfg.logging_errfile}
-      toConsole: ${toString cfg.logging_toConsole}
+      toConsole: ${boolToStr cfg.logging_toConsole}
       maxFileSizeBytes: ${toString cfg.logging_maxFileSizeBytes}
       maxFiles: ${toString cfg.logging_maxFiles}
     databaseUri: ${cfg.databaseUri}
@@ -376,30 +382,30 @@ in {
           membershipLists_global_matrixToIrc = mkOption {
             type = matrixToIrc;
           };
-          membershipLists_rooms = mkOption {
-            type = types.listOf (types.submodule { options = {
-              room = mkOption {
-                type = types.string;
-              };
-              matrixToIrc = mkOption {
-                type = matrixToIrc;
-              };
-            };});
-            description = ''
-              Apply specific rules to Matrix rooms. Only matrix-to-IRC takes
-              effect.
-           '';
-          };
-          membershipLists_channels = mkOption {
-            type = types.listOf (types.submodule { options = {
-              channel = mkOption {
-                type = types.string;
-              };
-              ircToMatrix = mkOption {
-                type = ircToMatrix;
-              };
-            };});
-          };
+          #membershipLists_rooms = mkOption {
+          #  type = types.listOf (types.submodule { options = {
+          #    room = mkOption {
+          #      type = types.string;
+          #    };
+          #    matrixToIrc = mkOption {
+          #      type = matrixToIrc;
+          #    };
+          #  };});
+          #  description = ''
+          #    Apply specific rules to Matrix rooms. Only matrix-to-IRC takes
+          #    effect.
+          # '';
+          #};
+          #membershipLists_channels = mkOption {
+          #  type = types.listOf (types.submodule { options = {
+          #    channel = mkOption {
+          #      type = types.string;
+          #    };
+          #    ircToMatrix = mkOption {
+          #      type = ircToMatrix;
+          #    };
+          #  };});
+          #};
           mappings = mkOption {
             type = types.listOf (types.submodule { options = {
               name = mkOption {
@@ -469,13 +475,14 @@ in {
             default = 30;
           };
           ircClients_ipv6_prefix = mkOption {
-            type = types.string;
+            type = types.nullOr types.string;
             description = ''
               [!]EXPERIMENTAL. THIS MAY NOT WORK.
               The IPv6 prefix to use for generating unique addresses for each
               connected user. If not specified, all users will connect from the
               same (default) address.
             '';
+            default = null;
           };
           ircClients_idleTimeout = mkOption {
             type = types.int;
